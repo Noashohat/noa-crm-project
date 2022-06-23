@@ -16,9 +16,9 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 //
-const port = 3000;
+const port = 3001;
 app.listen(port, () => {
-  console.log("Server started on port 3000");
+  console.log("Server started on port 3001");
 });
 //
 
