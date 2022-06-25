@@ -62,10 +62,10 @@ router.post("/login", async (req, res) => {
     return;
   }
   const user = await CustomerModel.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("email doesn't exist");
+  if (!user) return res.status(401).send("invalid email or password");
 
   const validPass = await bcrypt.compare(req.body.password, user.password);
-  if (!validPass) return res.status(400).send("invalid password");
+  if (!validPass) return res.status(400).send("invalid email or password");
 
   res.send("welcome");
 });
