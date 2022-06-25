@@ -1,0 +1,19 @@
+router.post("/login", async (req, res) => {
+  const schema = Joi.object({
+    email: Joi.string().required().min(6).max(255).email(),
+    password: Joi.string().min(6).max(1024).required(),
+  });
+  const { error, value } = schema.validate(req.Body);
+  if (error) {
+    console.log(error.details[0].message);
+    res.status(401).send("Unauthorized");
+    return;
+  }
+  const user = await CustomerModel.findOne({ email: req.body.email });
+  if (!user) return res.status(400).send("email doesn't exist");
+
+  const validPass = await bcrypt.compare(req.body.password, user.password);
+  if (!validPass) return res.status(400).send("invalid password");
+
+  res.send("welcome");
+});

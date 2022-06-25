@@ -29,6 +29,7 @@ const customerSchema = new mongoose.Schema({
     enum: ["business", "individual"],
     required: true,
   },
+  cards: Array,
 });
 
 const CustomerModel = mongoose.model("Customer", customerSchema);
@@ -42,24 +43,12 @@ const JoiSchema = Joi.object({
 
 const validatecustomer = (customer) => JoiSchema.validate(customer);
 
-// customerSchema.pre("save", async (next) => {
-//   try {
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(this.password, salt);
-//     this.password = hashedPassword;
-//     next();
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
-// customerSchema.methods.isValidPassword = async function (password) {
-//   try {
-//     return await bcrypt.compare(password, this.password);
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+function validateCards(data) {
+  const schema = Joi.object({
+    cards: Joi.array().min(1).required(),
+  });
+}
 
 exports.CustomerModel = CustomerModel;
 exports.validatecustomer = validatecustomer;
+exports.validateCards = validateCards;

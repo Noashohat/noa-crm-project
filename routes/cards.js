@@ -27,7 +27,9 @@ router.post("/addcard", async (req, res) => {
     );
 });
 
-// // Get request for getting all todo data
+//////////////////////////////
+////////////////////////////
+//////////////////////////////
 router.get("/cards/:id", async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id))
     return res.status(404).json({
@@ -49,8 +51,7 @@ router.get("/cards/:id", async (req, res) => {
 });
 
 ///////////////////
-//להוסיף עוד גט של כרטיס רגיל
-//put here
+///////////////////////
 /////
 
 router.delete("/cards/:id", async (req, res) => {
@@ -73,8 +74,9 @@ router.delete("/cards/:id", async (req, res) => {
       `${deletedcard.businessName} added succesfully > details: businessName:${deletedcard.businessName},businessDescription:${deletedcard.businessDescription},businessAddress:${deletedcard.businessAddress},businessPhone:${deletedcard.businessPhone},businessPic:${deletedcard.businessPic}, customer_id:${deletedcard.customer_id}`
     );
 });
-
+/////////////////////////////
 ///////////
+/////////////////////
 router.put("/cards/:id", async (req, res) => {
   const { error, value } = validateCard(req.body);
 
@@ -82,29 +84,6 @@ router.put("/cards/:id", async (req, res) => {
     res.status(404).json(`error updating card: ${error}`);
     return;
   }
-
-  //   const businessName = req.body.businessName;
-  //   const businessDescription = req.body.businessDescription;
-  //   const businessAddress = req.body.businessAddress;
-  //   const businessPhone = req.body.businessPhone;
-  //   const businessPic = req.body.businessPic;
-  //   const customer_id = req.body.customer_id;
-
-  //   try {
-  //     const updateCard = await CardModel.updateOne(
-  //       { name: businessName },
-  //       { Description: businessDescription },
-  //       { Address: businessAddress },
-  //       { Phone: businessPhone },
-  //       { Pic: businessPic },
-  //       { customer_id: customer_id }
-  //     );
-
-  //     res.status(200).json(updateCard);
-  //   } catch (error) {
-  //     res.status(400).json({ message: "erroe" });
-  //   }
-  // });
 
   const card = await CardModel.updateOne(
     { _id: req.params.id },

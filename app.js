@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 // const auth = require("./routes/auth");
 const app = express();
+const config = require("./config/dev");
+const jwt = require("jsonwebtoken");
 
 mongoose
   .connect("mongodb://localhost/noaCrm", {
@@ -28,10 +30,14 @@ app.use("/", customersRouter);
 //
 const cardsRouter = require("./routes/cards");
 app.use("/", cardsRouter);
+////
+// const authRouter = require("./routes/auth");
+// app.use("/", authRouter);
 
 ///
 
 // app.use("/auth", auth);
 
 //
+
 module.exports = app;
