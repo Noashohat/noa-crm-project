@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const config = require("./config/dev");
 const jwt = require("jsonwebtoken");
+const auth = require("./middleware/auth");
 
 mongoose
   .connect("mongodb://localhost/noaCrm", {
@@ -26,10 +27,12 @@ app.listen(port, () => {
 
 const customersRouter = require("./routes/customers");
 app.use("/", customersRouter);
+const customersInfoRouter = require("./routes/customersInfo");
+app.use("/", auth, customersInfoRouter);
 
 //
 const cardsRouter = require("./routes/cards");
-app.use("/", cardsRouter);
+app.use("/", auth, cardsRouter);
 ////
 // const authRouter = require("./routes/auth");
 // app.use("/", authRouter);
