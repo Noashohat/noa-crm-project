@@ -5,41 +5,40 @@ const router = express.Router();
 
 const { CardModel, validateCard } = require("../models/cards");
 const { CustomerModel } = require("../models/customers");
+const { ObjectId } = require("mongodb");
 
 ///////////
 router.post("/addcard", async (req, res) => {
   const { error } = validateCard(req.body);
   if (error) return res.status(400).send(error.details.message);
 
-  const {
-    customer_id,
-    businessName,
-    businessDescription,
-    businessAddress,
-    businessPhone,
-    businessPic,
-  } = req.body;
-  const newcard = await CardModel.create({
-    customer_id,
-    businessName,
-    businessDescription,
-    businessAddress,
-    businessPhone,
-    businessPic,
-  });
+  try {
+    const {
+      customer_id,
+      businessName,
+      businessDescription,
+      businessAddress,
+      businessPhone,
+      businessPic,
+    } = req.body;
+    const newcard = await CardModel.create({
+      customer_id,
+      businessName,
+      businessDescription,
+      businessAddress,
+      businessPhone,
+      businessPic,
+    });
 
-  return res.send(newcard);
+    const card = await newcard.save();
+
+    return res.send(card);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(`error adding Card`);
+    return;
+  }
 });
-
-// async (req, res) => {
-//   const card = await CardModel.find();
-//   return res.send(card);
-// },
-// async (req, res) => {
-//   const { id } = req.params;
-//   const customer = await CustomerModel.findById(id).populate("card");
-
-//   res.send(customer.card);
 
 //////////////////////////////
 ////////////////////////////
@@ -121,7 +120,6 @@ router.put("/updatecard/:id", async (req, res) => {
 ///////////////////////////////////////////
 ////////////////////////////////////
 ///////////////////////
-
 router.get("/cards/:id", async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id))
     return res.status(404).json({
@@ -129,14 +127,15 @@ router.get("/cards/:id", async (req, res) => {
       data: [],
       message: "It is not a valid mongodb id",
     });
+  try {
+    const userId = req.params.id;
+    const cards = await CardModel.find({ customer_id: ObjectId(userId) });
 
-  const { id } = req.params;
-  const owner = await CustomerModel.findById(id).populate("Cards");
-
-  if (!owner)
-    return res.status(404).send("The card with the given ID was not found.");
-
-  return res.status(200).json(owner.cards);
+    res.status(200).json(cards);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong, check logs");
+  }
 });
 
 module.exports = router;

@@ -1,8 +1,7 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
-
 const mongoose = require("mongoose");
-const { string } = require("joi");
+const joi = require("joi");
 
 const customerSchema = new mongoose.Schema({
   name: {
@@ -52,4 +51,3 @@ function validateCards(data) {
 
 exports.CustomerModel = CustomerModel;
 exports.validatecustomer = validatecustomer;
-exports.validateCards = validateCards;

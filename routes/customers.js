@@ -22,25 +22,24 @@ router.post("/addcustomer", async (req, res) => {
   }
 
   try {
-    const database = await mongo.getDb();
-    const collection = database.collection("customers");
-    collection.insertOne(value); // { name: '', phone..., email}
+    const { name, email, password, customerType } = req.body;
+
+    const customer = await CustomerModel.create({
+      name,
+      email,
+      password,
+      customerType,
+    });
+
+    const salt = await bcrypt.genSalt(10);
+    customer.password = await bcrypt.hash(customer.password, salt);
+    await customer.save();
   } catch (err) {
     console.log(err);
     res.status(400).send(`error adding customer`);
     return;
   }
 
-  customer = new CustomerModel({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    customerType: req.body.customerType,
-  });
-
-  const salt = await bcrypt.genSalt(10);
-  customer.password = await bcrypt.hash(customer.password, salt);
-  await customer.save();
   res
     .status(200)
     .json(
