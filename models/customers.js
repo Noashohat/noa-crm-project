@@ -2,6 +2,7 @@ const Joi = require("joi");
 const bcrypt = require("bcrypt");
 
 const mongoose = require("mongoose");
+const { string } = require("joi");
 
 const customerSchema = new mongoose.Schema({
   name: {
@@ -29,7 +30,7 @@ const customerSchema = new mongoose.Schema({
     enum: ["business", "individual"],
     required: true,
   },
-  cards: Array,
+  cards: [{ type: mongoose.Schema.Types.ObjectId, ref: "Card" }],
 });
 
 const CustomerModel = mongoose.model("Customer", customerSchema);

@@ -17,8 +17,10 @@ mongoose
   .catch((err) => console.error("Could not connect to MongoDB..."));
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+
 //
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const port = 3001;
 app.listen(port, () => {
   console.log("Server started on port 3001");
@@ -28,11 +30,11 @@ app.listen(port, () => {
 const customersRouter = require("./routes/customers");
 app.use("/", customersRouter);
 const customersInfoRouter = require("./routes/customersInfo");
-app.use("/", auth, customersInfoRouter);
+app.use("/", customersInfoRouter);
 
 //
 const cardsRouter = require("./routes/cards");
-app.use("/", auth, cardsRouter);
+app.use("/", cardsRouter);
 ////
 // const authRouter = require("./routes/auth");
 // app.use("/", authRouter);

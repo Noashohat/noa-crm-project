@@ -3,6 +3,11 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 
 const cardschema = new mongoose.Schema({
+  customer_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Customer",
+    required: true,
+  },
   businessName: {
     type: String,
     required: true,
@@ -32,18 +37,17 @@ const cardschema = new mongoose.Schema({
     minlength: 11,
     maxlength: 1024,
   },
-  customer_id: [{ type: mongoose.Schema.Types.ObjectId, ref: "Customer" }],
 });
 
 const CardModel = mongoose.model("Card", cardschema);
 
 const JoiSchema = Joi.object({
+  customer_id: Joi.required(),
   businessName: Joi.string().min(2).max(255).required(),
   businessDescription: Joi.string().min(2).max(1024).required(),
   businessAddress: Joi.string().min(2).max(400).required(),
   businessPhone: Joi.string().min(9).max(15).required(),
   businessPic: Joi.string().min(11).max(1024),
-  customer_id: Joi.string().required(),
 });
 
 const validateCard = (card) => JoiSchema.validate(card);

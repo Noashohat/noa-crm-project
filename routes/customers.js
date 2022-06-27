@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const jwt = require("jsonwebtoken");
+const config = require("../config/dev");
 
 const { CustomerModel, validatecustomer } = require("../models/customers");
 const { CardModel } = require("../models/cards");
@@ -66,6 +68,11 @@ router.post("/login", async (req, res) => {
 
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass) return res.status(400).send("invalid email or password");
+
+  const token = jwt.sign({ _id: user.id }, config.JWT_SECRET, {
+    expiresIn: "72800s",
+  });
+  res.header("auth-token", token);
 
   res.send("welcome");
 });
