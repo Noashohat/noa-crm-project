@@ -8,14 +8,10 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/dev");
 
 const { CustomerModel, validatecustomer } = require("../models/customers");
-const { CardModel } = require("../models/cards");
 
-// // insert a new data in todo
 router.post("/addcustomer", async (req, res) => {
-  // validate using Joi, with factoring function
   const { error, value } = validatecustomer(req.body);
 
-  // if have any error then return bad request with error else just add the new one
   if (error) {
     res.status(404).json(`error adding customer: ${error}`);
     return;
@@ -47,9 +43,7 @@ router.post("/addcustomer", async (req, res) => {
     );
 });
 
-///////////////////////
 /////////////////////
-////////////////////
 
 router.post("/login", async (req, res) => {
   const schema = Joi.object({
@@ -74,10 +68,6 @@ router.post("/login", async (req, res) => {
   res
     .header("auth-token", token)
     .send(`welcome ${req.body.email} , here is your token: ${token}`);
-
-  // res.send("welcome");
 });
 
-//////////////////////////////
-////////////////////////////
 module.exports = router;
