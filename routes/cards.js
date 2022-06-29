@@ -95,7 +95,7 @@ router.put("/updatecard/:id", async (req, res) => {
   }
 
   const card = await CardModel.updateOne(
-    { _id: req.params.id },
+    { _id: ObjectId(req.params.id) },
     {
       $set: {
         customer_id: req.customer_id,

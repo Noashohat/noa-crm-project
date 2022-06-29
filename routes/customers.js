@@ -71,9 +71,11 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign({ _id: user.id }, config.JWT_SECRET, {
     expiresIn: "72800s",
   });
-  res.header("auth-token", token);
+  res
+    .header("auth-token", token)
+    .send(`welcome ${req.body.email} , here is your token: ${token}`);
 
-  res.send("welcome");
+  // res.send("welcome");
 });
 
 //////////////////////////////
