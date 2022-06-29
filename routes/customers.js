@@ -32,7 +32,7 @@ router.post("/addcustomer", async (req, res) => {
     await customer.save();
   } catch (err) {
     console.log(err);
-    res.status(400).send(`error adding customer`);
+    res.status(400).send(`error adding customer: ${err}`);
     return;
   }
 

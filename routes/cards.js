@@ -35,7 +35,7 @@ router.post("/addcard", async (req, res) => {
     return res.send(card);
   } catch (err) {
     console.log(err);
-    res.status(400).send(`error adding Card`);
+    res.status(400).send(`error adding Card:${err}`);
     return;
   }
 });

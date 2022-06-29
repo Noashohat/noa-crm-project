@@ -11,6 +11,6 @@ module.exports = (req, res, next) => {
     next();
   } catch (err) {
     console.log(err);
-    res.status(401).send("Access denied. go to login");
+    res.status(401).send(`error ${err} , Access denied. go to login`);
   }
 };

@@ -17,10 +17,8 @@ router.get("/:id", async (req, res) => {
       message: "It is not a valid mongodb id",
     });
 
-  // search using id In mongodb with mongoose
   const customer = await CustomerModel.findById(req.params.id);
 
-  // checking if todo not found then 404 request
   if (!customer)
     return res.status(404).json(
       res.json({
@@ -30,29 +28,11 @@ router.get("/:id", async (req, res) => {
       })
     );
 
-  // if found then send the response
   return res.json({
     success: true,
     data: customer,
     message: "Finding successful!",
   });
 });
-
-////////////////////////
-
-// router.get("/cards/:id", async (req, res) => {
-//   const { error } = validateCards(req.params.id);
-//   if (error) res.status(400).send(error.details[0].message);
-
-//   const getCards = async (cardsArray) => {
-//     const cards = await CardModel.find({ ObjectId: { $in: cardsArray } });
-//     return cards;
-//   };
-
-//   let user = await CustomerModel.findById(req.user._id);
-//   user.cards = req.body.cards;
-//   user = await user.save();
-//   res.send(user);
-// });
 
 module.exports = router;
