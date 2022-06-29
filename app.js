@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const config = require("./config/dev");
 const jwt = require("jsonwebtoken");
-const auth = require("./models/auth");
+const auth = require("./middleware/auth");
 
 mongoose
   .connect("mongodb://localhost/noaCrm", {
