@@ -1,15 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-// const auth = require("./routes/auth");
 const app = express();
 const config = require("./config/dev");
 const jwt = require("jsonwebtoken");
-const auth = require("./middleware/auth");
+const auth = require("./models/auth");
 
 mongoose
   .connect("mongodb://localhost/noaCrm", {
-    //// change to noaCrm
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -30,19 +28,10 @@ app.listen(port, () => {
 const customersRouter = require("./routes/customers");
 app.use("/", customersRouter);
 const customersInfoRouter = require("./routes/customersInfo");
-app.use("/", customersInfoRouter);
+app.use("/", auth, customersInfoRouter);
 
 //
 const cardsRouter = require("./routes/cards");
-app.use("/", cardsRouter);
-////
-// const authRouter = require("./routes/auth");
-// app.use("/", authRouter);
-
-///
-
-// app.use("/auth", auth);
-
-//
+app.use("/", auth, cardsRouter);
 
 module.exports = app;
